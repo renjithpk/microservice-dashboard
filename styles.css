@@ -1,31 +1,29 @@
-.grid-container {
-    display: grid;
-    grid-gap: 10px;
-  }
-  
-  .grid-group {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-    border: 1px solid blueviolet;
-    padding: 10px;
-  }
-  
-  .grid-item {
-    position: relative;
-    border: 1px solid black;
-    padding: 20px;
-    text-align: center;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .grid-item i {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 16px;
-    color: #888;
-    cursor: pointer;
-  }
-  
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 10px;
+}
+
+.gridItem {
+  background-color: #eaeaea;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+}
+
+.contentContainer {
+  position: relative;
+}
+
+.setGroup {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.buildStatusBadge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}

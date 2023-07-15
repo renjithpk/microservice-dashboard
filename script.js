@@ -1,40 +1,64 @@
 const groupContainer = document.getElementById("gridContainer");
 
+function createGridItems(items) {
+  const gridItems = [];
+  items.forEach(item => {
+    const gridItem = document.createElement("div");
+    gridItem.className = "gridItem";
+
+    // Create the content container
+    const contentContainer = document.createElement("div");
+    contentContainer.className = "contentContainer";
+
+    // Add any other content or elements you want for the grid item
+    const titleElement = document.createElement("h3");
+    titleElement.textContent = item.title;
+    contentContainer.appendChild(titleElement);
+
+    // Create the build status badge using an <img> element
+    if (item.buildStatusBadgeUrl) {
+      const buildStatusBadge = document.createElement("img");
+      buildStatusBadge.src = item.buildStatusBadgeUrl;
+      buildStatusBadge.alt = "Build Status";
+      buildStatusBadge.className = "buildStatusBadge";
+      contentContainer.appendChild(buildStatusBadge);
+    }
+
+    // Add the content container to the grid item
+    gridItem.appendChild(contentContainer);
+
+    gridItems.push(gridItem);
+  });
+  return gridItems;
+}
+
+
+
+
+
 fetch('data.yaml')
   .then(response => response.text())
   .then(yamlString => {
-    const data = jsyaml.load(yamlString);
+    const groupData = jsyaml.load(yamlString);
 
-    if (data?.data?.length > 0) {
-      data.data.forEach(group => {
-        const groupContainerDiv = document.createElement("div");
-        groupContainerDiv.classList.add("grid-group");
+    groupData.forEach(group => {
+      const setGroup = document.createElement("div");
+      setGroup.className = "setGroup";
 
-        group.items.forEach(item => {
-          const tile = document.createElement("div");
-          tile.classList.add("grid-item");
+      const title = document.createElement("h3");
+      title.textContent = group.name;
+      setGroup.appendChild(title);
 
-          const menuIcon = document.createElement("i");
-          menuIcon.classList.add("fas", "fa-bars");
-          tile.appendChild(menuIcon);
+      const gridContainerInner = document.createElement("div");
+      gridContainerInner.className = "gridContainer";
 
-          const titleElement = document.createElement("h3");
-          titleElement.textContent = item.title;
-          tile.appendChild(titleElement);
-
-          const contentElement = document.createElement("p");
-          contentElement.textContent = item.content;
-          tile.appendChild(contentElement);
-
-          groupContainerDiv.appendChild(tile);
-        });
-
-        groupContainer.appendChild(groupContainerDiv);
+      const gridItems = createGridItems(group.items); // Call the function to create grid items
+      gridItems.forEach(gridItem => {
+        gridContainerInner.appendChild(gridItem);
       });
-    } else {
-      const emptyDataMessage = document.createElement("p");
-      emptyDataMessage.textContent = "No data available.";
-      groupContainer.appendChild(emptyDataMessage);
-    }
+
+      setGroup.appendChild(gridContainerInner);
+      groupContainer.appendChild(setGroup);
+    });
   })
   .catch(console.error);
