@@ -1,0 +1,16 @@
+data:
+- name: group1
+  items:
+  - title: Item 1
+    content: Content 1
+  - title: Item 2
+    content: Content 2
+  # Add more items as needed
+
+- name: group1
+  items:
+  - title: Item A
+    content: Content A
+  - title: Item B
+    content: Content B
+  # Add more items as needed
