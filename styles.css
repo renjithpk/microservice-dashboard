@@ -1,8 +1,11 @@
+body {
+  background-color: #e3d6d5;
+}
+
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(315px, 1fr));
   grid-gap: 10px;
-  
 }
 
 .gridItem {
@@ -10,7 +13,7 @@
   padding: 10px;
   text-align: center;
   background-color: #eaeaea;
-  border: 3px solid red;
+  border: 3px solid gray;
   border-radius: 10px;
   width: 300px;
   height: 75px;
@@ -24,10 +27,11 @@
 .setGroup {
   border: 1px solid #ccc;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+  background-color: white;
 }
 
 .buildStatusBadge {
