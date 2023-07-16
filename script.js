@@ -1,35 +1,3 @@
-function createContextMenu() {
-  var contextMenu = document.createElement('div');
-  contextMenu.className = 'context-menu';
-
-  var ul = document.createElement('ul');
-
-  var li1 = document.createElement('li');
-  var a1 = document.createElement('a');
-  a1.href = '#';
-  a1.textContent = 'Menu Item 1';
-  li1.appendChild(a1);
-  ul.appendChild(li1);
-
-  var li2 = document.createElement('li');
-  var a2 = document.createElement('a');
-  a2.href = '#';
-  a2.textContent = 'Menu Item 2';
-  li2.appendChild(a2);
-  ul.appendChild(li2);
-
-  var li3 = document.createElement('li');
-  var a3 = document.createElement('a');
-  a3.href = '#';
-  a3.textContent = 'Menu Item 3';
-  li3.appendChild(a3);
-  ul.appendChild(li3);
-
-  contextMenu.appendChild(ul);
-  document.body.appendChild(contextMenu);
-
-  return contextMenu;
-}
 
 const groupContainer = document.getElementById("gridContainer");
 
@@ -55,19 +23,19 @@ function createContextMenu(menuItems) {
 }
 
 
-function createGridItems(items, bgColor) {
+function createGridItems(items, color) {
   const gridItems = [];
   items.forEach(item => {
     const gridItem = document.createElement("div");
     gridItem.className = "gridItem";
     // Set the background color from the data.yaml file
-    gridItem.style.borderColor = bgColor ;
+    gridItem.style.borderColor = color;
 
     const contentContainer = document.createElement("div");
     contentContainer.className = "contentContainer";
 
     const titleElement = document.createElement("h3");
-    titleElement.textContent = item.title;
+    titleElement.textContent = item.name;
     contentContainer.appendChild(titleElement);
 
     const menuIcon = document.createElement("i");
@@ -106,6 +74,7 @@ function createGridItems(items, bgColor) {
   return gridItems;
 }
 
+
 fetch('data.yaml')
   .then(response => response.text())
   .then(yamlString => {
@@ -116,13 +85,13 @@ fetch('data.yaml')
       setGroup.className = "setGroup";
 
       const title = document.createElement("h3");
-      title.textContent = group.name;
+      title.textContent = group.group;
       setGroup.appendChild(title);
 
       const gridContainerInner = document.createElement("div");
       gridContainerInner.className = "gridContainer";
 
-      const gridItems = createGridItems(group.items, group.bgColor);
+      const gridItems = createGridItems(group.items, group.color);
       gridItems.forEach(gridItem => {
         gridContainerInner.appendChild(gridItem);
       });
@@ -132,3 +101,5 @@ fetch('data.yaml')
     });
   })
   .catch(console.error);
+
+  

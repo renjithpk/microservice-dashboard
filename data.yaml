@@ -1,22 +1,26 @@
-- name: first group
+- group: front end apis
+  color: red
   items:
-  - title: Item 1
-    content: Content 1
+  - name: checkout-api
     menu:
-    - menu item 1
-    - menu item 2 
-  - title: Item 2
+    - logs
+    - metrics
+  - name: availability-api
     content: Content 2
     menu:
-    - menu item 1
-    - menu item 2 
-  # Add more items as needed
-
-- name: second group
+    - logs
+    - metrics
+- group: backend apis
+  color: blue
   items:
-  - title: Item A
+  - name: inventory-api
     content: Content A
     buildStatusBadgeUrl: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
-  - title: Item B
+    menu:
+    - logs
+    - metrics
+  - name: analytics-api
     content: Content B
-  # Add more items as needed
+    menu:
+    - logs
+    - metrics
