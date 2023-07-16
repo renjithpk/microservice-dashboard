@@ -1,26 +1,95 @@
-- group: front end apis
+- group: booking
   color: red
   items:
-  - name: checkout-api
-    menu:
-    - logs
-    - metrics
-  - name: availability-api
-    content: Content 2
-    menu:
-    - logs
-    - metrics
-- group: backend apis
+    - name: booking-api
+      menu:
+        logs: http://link
+        metrics: http://link
+    - name: availability-api
+      content: Content 2
+      menu:
+        logs: http://link
+        metrics: http://link
+    - name: reservation-api
+      content: Content 3
+      menu:
+        logs: http://link
+        metrics: http://link
+    - name: confirmation-api
+      content: Content 4
+      menu:
+        logs: http://link
+        metrics: http://link
+
+- group: vehicles
   color: blue
   items:
-  - name: inventory-api
-    content: Content A
-    buildStatusBadgeUrl: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
-    menu:
-    - logs
-    - metrics
-  - name: analytics-api
-    content: Content B
-    menu:
-    - logs
-    - metrics
+    - name: inventory-api
+      content: Content A
+      buildStatusBadgeUrl: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
+      menu:
+        logs: http://link
+        metrics: http://link
+    - name: vehicle-details-api
+      content: Content B
+      menu:
+        logs: http://link
+        metrics: http://link
+    - name: maintenance-api
+      content: Content C
+      menu:
+        logs: http://link
+        metrics: http://link
+    - name: pricing-api
+      content: Content D
+      menu:
+        logs: http://link
+        metrics: http://link
+
+- group: payment
+  color: green
+  items:
+    - name: payment-gateway-api
+      menu:
+        logs: http://link
+        metrics: http://link
+    - name: invoice-api
+      content: Content 2
+      menu:
+        logs: http://link
+        metrics: http://link
+    - name: refund-api
+      content: Content 3
+      menu:
+        logs: http://link
+        metrics: http://link
+    - name: coupon-api
+      content: Content 4
+      menu:
+        logs: http://link
+        metrics: http://link
+
+- group: users
+  color: yellow
+  items:
+    - name: user-management-api
+      content: Content A
+      buildStatusBadgeUrl: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
+      menu:
+        logs: http://link
+        metrics: http://link
+    - name: authentication-api
+      content: Content B
+      menu:
+        logs: http://link
+        metrics: http://link
+    - name: profile-api
+      content: Content C
+      menu:
+        logs: http://link
+        metrics: http://link
+    - name: notification-api
+      content: Content D
+      menu:
+        logs: http://link
+        metrics: http://link

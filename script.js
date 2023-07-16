@@ -1,17 +1,16 @@
 
 const groupContainer = document.getElementById("gridContainer");
-
 function createContextMenu(menuItems) {
   var contextMenu = document.createElement('div');
   contextMenu.className = 'context-menu';
 
   var ul = document.createElement('ul');
 
-  menuItems.forEach(item => {
+  Object.entries(menuItems).forEach(([menuItem, link]) => {
     var li = document.createElement('li');
     var a = document.createElement('a');
-    a.href = '#';
-    a.textContent = item;
+    a.href = link;
+    a.textContent = menuItem;
     li.appendChild(a);
     ul.appendChild(li);
   });
@@ -21,7 +20,6 @@ function createContextMenu(menuItems) {
 
   return contextMenu;
 }
-
 
 function createGridItems(items, color) {
   const gridItems = [];
@@ -73,6 +71,7 @@ function createGridItems(items, color) {
   });
   return gridItems;
 }
+
 
 
 fetch('data.yaml')
