@@ -50,6 +50,12 @@
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 5px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.context-menu.show {
+  opacity: 1;
 }
 
 .context-menu ul {
@@ -60,8 +66,19 @@
 
 .context-menu li {
   padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .context-menu li:hover {
   background-color: #f0f0f0;
+}
+
+.context-menu a {
+  color: #333;
+  text-decoration: none;
+}
+
+.context-menu a:hover {
+  text-decoration: underline;
 }

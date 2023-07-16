@@ -54,6 +54,9 @@ function createGridItems(items) {
     menuIcon.addEventListener("click", (event) => {
       event.stopPropagation(); // Prevent event bubbling
       const contextMenu = createContextMenu();
+      setTimeout(() => {
+        contextMenu.classList.add("show"); // Add the "show" class after a small delay
+      }, 10);
       const menuIconRect = menuIcon.getBoundingClientRect();
       const posX = menuIconRect.right - contextMenu.offsetWidth;
       const posY = menuIconRect.top;
@@ -71,10 +74,7 @@ function createGridItems(items) {
       };
       document.addEventListener("mousemove", removeContextMenu);
     });
-    
-    
-    
-    
+
     // Add the menu icon, content container, and dropdown menu to the grid item
     gridItem.appendChild(contentContainer);
     gridItem.appendChild(menuIcon);
