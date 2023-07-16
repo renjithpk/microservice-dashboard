@@ -33,17 +33,39 @@ function createContextMenu() {
 
 const groupContainer = document.getElementById("gridContainer");
 
-function createGridItems(items) {
+function createContextMenu(menuItems) {
+  var contextMenu = document.createElement('div');
+  contextMenu.className = 'context-menu';
+
+  var ul = document.createElement('ul');
+
+  menuItems.forEach(item => {
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#';
+    a.textContent = item;
+    li.appendChild(a);
+    ul.appendChild(li);
+  });
+
+  contextMenu.appendChild(ul);
+  document.body.appendChild(contextMenu);
+
+  return contextMenu;
+}
+
+
+function createGridItems(items, bgColor) {
   const gridItems = [];
   items.forEach(item => {
     const gridItem = document.createElement("div");
     gridItem.className = "gridItem";
+    // Set the background color from the data.yaml file
+    gridItem.style.borderColor = bgColor ;
 
-    // Create the content container
     const contentContainer = document.createElement("div");
     contentContainer.className = "contentContainer";
 
-    // Add any other content or elements you want for the grid item
     const titleElement = document.createElement("h3");
     titleElement.textContent = item.title;
     contentContainer.appendChild(titleElement);
@@ -53,18 +75,18 @@ function createGridItems(items) {
 
     menuIcon.addEventListener("click", (event) => {
       event.stopPropagation(); // Prevent event bubbling
-      const contextMenu = createContextMenu();
+      const contextMenu = createContextMenu(item.menu);
       setTimeout(() => {
         contextMenu.classList.add("show"); // Add the "show" class after a small delay
       }, 10);
       const menuIconRect = menuIcon.getBoundingClientRect();
       const posX = menuIconRect.right - contextMenu.offsetWidth;
       const posY = menuIconRect.top;
-    
+
       contextMenu.style.right = window.innerWidth - menuIconRect.right + "px";
       contextMenu.style.top = posY + "px";
       contextMenu.style.display = "block";
-    
+
       // Remove the context menu when the cursor is away from it
       const removeContextMenu = (e) => {
         if (!contextMenu.contains(e.target)) {
@@ -100,7 +122,7 @@ fetch('data.yaml')
       const gridContainerInner = document.createElement("div");
       gridContainerInner.className = "gridContainer";
 
-      const gridItems = createGridItems(group.items); // Call the function to create grid items
+      const gridItems = createGridItems(group.items, group.bgColor);
       gridItems.forEach(gridItem => {
         gridContainerInner.appendChild(gridItem);
       });
