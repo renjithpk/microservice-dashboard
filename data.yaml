@@ -1,12 +1,18 @@
-- name: group1
+- name: first group
   items:
   - title: Item 1
     content: Content 1
+    menu:
+    - menu item 1
+    - menu item 2 
   - title: Item 2
     content: Content 2
+    menu:
+    - menu item 1
+    - menu item 2 
   # Add more items as needed
 
-- name: group2
+- name: second group
   items:
   - title: Item A
     content: Content A

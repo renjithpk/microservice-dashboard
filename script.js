@@ -1,5 +1,4 @@
 const groupContainer = document.getElementById("gridContainer");
-
 function createGridItems(items) {
   const gridItems = [];
   items.forEach(item => {
@@ -15,26 +14,45 @@ function createGridItems(items) {
     titleElement.textContent = item.title;
     contentContainer.appendChild(titleElement);
 
-    // Create the build status badge using an <img> element
-    if (item.buildStatusBadgeUrl) {
-      const buildStatusBadge = document.createElement("img");
-      buildStatusBadge.src = item.buildStatusBadgeUrl;
-      buildStatusBadge.alt = "Build Status";
-      buildStatusBadge.className = "buildStatusBadge";
-      contentContainer.appendChild(buildStatusBadge);
-    }
+    // Create the menu icon and dropdown menu
+    const { menuIcon, dropdownMenu } = createMenuIconAndDropdown(item.menu);
 
-    // Add the content container to the grid item
+    // Add event listener for menu icon click
+    menuIcon.addEventListener("click", () => {
+      toggleDropdownMenu(dropdownMenu); // Call a function to toggle the dropdown menu
+    });
+
+    // Add the menu icon, content container, and dropdown menu to the grid item
     gridItem.appendChild(contentContainer);
+    gridItem.appendChild(menuIcon);
+    gridItem.appendChild(dropdownMenu);
 
     gridItems.push(gridItem);
   });
   return gridItems;
 }
 
+function createMenuIconAndDropdown(menuItems) {
+  const menuIcon = document.createElement("i");
+  menuIcon.className = "fas fa-bars menuIcon";
 
+  const dropdownMenu = document.createElement("div");
+  dropdownMenu.className = "dropdownMenu";
+  dropdownMenu.classList.add("hide"); // Start with the dropdown menu hidden
 
+  if (menuItems && Array.isArray(menuItems)) {
+    menuItems.forEach(menuItem => {
+      const menuItemElement = document.createElement("div");
+      menuItemElement.textContent = menuItem;
+      dropdownMenu.appendChild(menuItemElement);
+    });
+  }
 
+  return { menuIcon, dropdownMenu };
+}
+function toggleDropdownMenu(dropdownMenu) {
+  dropdownMenu.classList.toggle("show");
+}
 
 fetch('data.yaml')
   .then(response => response.text())

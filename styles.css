@@ -1,14 +1,21 @@
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 10px;
+  
 }
 
 .gridItem {
   background-color: #eaeaea;
-  padding: 10px;
   position: relative;
+  padding: 10px;
   text-align: center;
+  border: 3px solid red;
+  width: 300px;
+  height: 75px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+  border-radius: 10px;
 }
 
 .contentContainer {
@@ -20,6 +27,8 @@
   padding: 10px;
   margin-bottom: 20px;
   text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
 .buildStatusBadge {
@@ -27,3 +36,32 @@
   top: 20px;
   right: 20px;
 }
+
+.menuIcon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 16px;
+  color: #888;
+}
+
+.dropdownMenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
