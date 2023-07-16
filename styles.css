@@ -6,16 +6,15 @@
 }
 
 .gridItem {
-  background-color: #eaeaea;
   position: relative;
   padding: 10px;
   text-align: center;
+  background-color: #eaeaea;
   border: 3px solid red;
+  border-radius: 10px;
   width: 300px;
   height: 75px;
-  box-sizing: border-box;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
-  border-radius: 10px;
 }
 
 .contentContainer {
@@ -39,29 +38,8 @@
 
 .menuIcon {
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  top: 10px;
+  right: 10px;
   font-size: 16px;
   color: #888;
 }
-
-.dropdownMenu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: #f9f9f9;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  z-index: 1;
-}
-
-.hide {
-  display: none;
-}
-
-.show {
-  display: block;
-}
-
