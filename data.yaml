@@ -1,95 +1,143 @@
 - group: booking
-  color: red
+  color: "#99bbf2"
   items:
     - name: booking-api
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link/booking-api
+        - name: metrics
+          link: http://link/booking-api
+      buttons:
+        - name: "new"
+          color: "#c3f0c2"
+          items:
+            - name: hello
+              link: https://somelink/hello
+            - name: hey
+              link: https://somelink/hey
     - name: availability-api
       content: Content 2
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link/availability-api
+        - name: metrics
+          link: http://link/availability-api
+      buttons:
+        - name: "test"
+          color: "#becbe6"
+          items:
+            - name: hello
+              link: https://somelink/hello
+            - name: hey
+              link: https://somelink/hey
     - name: reservation-api
       content: Content 3
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link/reservation-api
+        - name: metrics
+          link: http://link/reservation-api
     - name: confirmation-api
       content: Content 4
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link/booking-api
+        - name: metrics
+          link: http://link/booking-api
 
 - group: vehicles
-  color: blue
+  color: "#dab1e0"
   items:
     - name: inventory-api
       content: Content A
       buildStatusBadgeUrl: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link
     - name: vehicle-details-api
       content: Content B
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link
     - name: maintenance-api
       content: Content C
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link
     - name: pricing-api
       content: Content D
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link
 
 - group: payment
-  color: green
+  color: "#b1e0c9"
   items:
     - name: payment-gateway-api
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link
     - name: invoice-api
       content: Content 2
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link
     - name: refund-api
       content: Content 3
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link
     - name: coupon-api
       content: Content 4
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link
 
 - group: users
-  color: yellow
+  color: "#dce0b1"
   items:
     - name: user-management-api
       content: Content A
       buildStatusBadgeUrl: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link
     - name: authentication-api
       content: Content B
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link
     - name: profile-api
       content: Content C
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link
     - name: notification-api
       content: Content D
       menu:
-        logs: http://link
-        metrics: http://link
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link

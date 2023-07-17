@@ -1,11 +1,30 @@
 body {
-  background-color: #e3d6d5;
+  background-color: #d65465;
 }
 
 .gridContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(315px, 1fr));
   grid-gap: 10px;
+  padding: 5px;
+}
+
+/* CSS for the first row */
+.gridItem .firstRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* CSS for the second row */
+.gridItem .secondRow {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* CSS for the title element */
+.gridItem .title {
+  margin: 0; /* Remove default margins for the title element */
 }
 
 .gridItem {
@@ -15,13 +34,9 @@ body {
   background-color: #eaeaea;
   border: 3px solid gray;
   border-radius: 10px;
-  width: 300px;
-  height: 75px;
+  /* width: 300px;
+  height: 75px; */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
-}
-
-.contentContainer {
-  position: relative;
 }
 
 .setGroup {
@@ -32,12 +47,6 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   background-color: white;
-}
-
-.buildStatusBadge {
-  position: absolute;
-  top: 20px;
-  right: 20px;
 }
 
 .menuIcon {
@@ -85,4 +94,17 @@ body {
 
 .context-menu a:hover {
   text-decoration: underline;
+}
+
+.clickableButton {
+  margin-top: 10px;
+  padding: 3px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.3s ease-in-out;
+  border-radius: 5px;
 }
