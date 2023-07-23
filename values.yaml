@@ -1,0 +1,81 @@
+- group: booking
+  color: "#99bbf2"
+  items:
+  - name: booking-api
+    menu:
+    - name: logs
+      link: http://link/booking-api
+    - name: metrics
+      link: http://link/booking-api
+    buttons:
+    - name: "new"
+      color: "#c3f0c2"
+      items:
+      - name: hello
+        link: https://somelink/hello
+      - name: hey
+        link: https://somelink/hey
+    backends:
+    - inventory-api
+    - user-management-api
+  - name: availability-api
+    menu:
+    - name: logs
+      link: http://link/availability-api
+    - name: metrics
+      link: http://link/availability-api
+    buttons:
+    - name: "test"
+      color: "#becbe6"
+      items:
+      - name: hello
+        link: https://somelink/hello
+      - name: hey
+        link: https://somelink/hey
+    backends:
+    - booking-api
+    - user-management-api
+  # Add other items here
+
+- group: vehicles
+  color: "#dab1e0"
+  items:
+  - name: inventory-api
+    buildStatusBadgeUrl: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
+    menu:
+    - name: logs
+      link: http://link
+    - name: metrics
+      link: http://link
+    backends:
+    - booking-api
+    - user-management-api
+  # Add other items here
+
+- group: payment
+  color: "#b1e0c9"
+  items:
+  - name: payment-gateway-api
+    menu:
+    - name: logs
+      link: http://link
+    - name: metrics
+      link: http://link
+    backends:
+    - booking-api
+  # Add other items here
+
+- group: users
+  color: "#dce0b1"
+  items:
+  - name: user-management-api
+    buildStatusBadgeUrl: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
+    menu:
+    - name: logs
+      link: http://link
+    - name: metrics
+      link: http://link
+    backends:
+    - inventory-api
+    - booking-api
+  # Add other items here

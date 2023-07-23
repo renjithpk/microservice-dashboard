@@ -1,0 +1,17 @@
+{{- range .}}
+- group: {{ .group }}
+  color: "{{ .color }}"
+  items:
+    {{- range .items }}
+    - name: {{ .name }}
+      menu:
+        {{- range .menu }}
+        - name: {{ .name }}
+          link: {{ .link }}
+        {{- end }}
+      {{- if .buttons }}
+      backends: {{ .backends }}
+      {{- end }} 
+    {{- end }} 
+{{- end }}
+
