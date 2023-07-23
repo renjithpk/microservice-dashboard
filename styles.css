@@ -27,6 +27,13 @@ body {
   margin: 0; /* Remove default margins for the title element */
 }
 
+/* CSS to style the "disabled" grid items */
+.gridItem.disabled {
+  opacity: 0.2; /* Reduce opacity to create a grayed-out effect */
+  pointer-events: none; /* Disable pointer events, making it non-clickable */
+  cursor: not-allowed; /* Change cursor to "not-allowed" when hovering over the disabled item */
+}
+
 .gridItem {
   position: relative;
   padding: 10px;

@@ -1,6 +1,8 @@
 import { createContextMenu } from './contextMenu.js';
 
 const groupContainer = document.getElementById("gridContainer");
+let serviceRelations = {};
+let currentState = "normal"
 
 function alignMenuCorner(position, menuIcon, contextMenu) {
   const menuIconRect = menuIcon.getBoundingClientRect();
@@ -31,6 +33,7 @@ function createGridItems(items, color) {
     gridItem.className = "gridItem";
     // Set the background color from the data.yaml file
     gridItem.style.borderColor = color;
+    gridItem.id = item.name; // Set the id attribute for each grid item (using the item name)
 
     const firstRow = document.createElement("div");
     firstRow.className = "firstRow";
@@ -50,7 +53,8 @@ function createGridItems(items, color) {
     secondRow.className = "secondRow";
     // Add the click event listener for the menu icon
     menuIcon.addEventListener("click", event => handleItemClick(event, item.menu, "topRight"));
-
+    // Add the click event listener for the grid item (item itself)
+    gridItem.addEventListener("click", event => handleGridItemClick(event, item));
     // Create clickable buttons for the second row
     if (item.buttons) {
       item.buttons.forEach(buttonData => {
@@ -58,10 +62,8 @@ function createGridItems(items, color) {
         button.className = "clickableButton";
         button.textContent = buttonData.name;
         button.style.backgroundColor = buttonData.color;
-
         // Add click event listener to the buttons
         button.addEventListener("click", event => handleItemClick(event, buttonData.items, "topRight"));
-
         // Append the button to the second row
         secondRow.appendChild(button);
       });
@@ -74,6 +76,39 @@ function createGridItems(items, color) {
   });
 
   return gridItems;
+}
+
+function handleGridItemClick(event, item) {
+  const clickedItemName = item.name;
+  if (currentState === "normal") {
+    disableUnrelatedItems(clickedItemName, serviceRelations);
+  } else {
+    disableUnrelatedItems(null, serviceRelations);
+  }
+  event.stopPropagation();
+  // You can implement other actions for the clicked item here
+}
+
+function disableUnrelatedItems(clickedItemName, serviceRelations) {
+  const gridItems = document.querySelectorAll(".gridItem");
+  gridItems.forEach(gridItem => {
+    const itemName = gridItem.id;
+
+    // If clickedItemName is null, it means we want to reset all items to their original state
+    if (clickedItemName === null) {
+      gridItem.classList.remove("disabled");
+      currentState = "normal"
+    } else {
+      // Check if the item is related to the clicked item (either a backend or consumer)
+      const relatedToClicked = serviceRelations[clickedItemName].backends.includes(itemName) ||
+                               serviceRelations[clickedItemName].consumers.includes(itemName);
+      // Disable unrelated items, except for the clicked item
+      if (itemName !== clickedItemName) {
+        gridItem.classList.toggle("disabled", !relatedToClicked);
+      }
+      currentState = "highlighted"
+    }
+  });
 }
 
 function handleItemClick(event, itemMenu, position) {
@@ -101,12 +136,35 @@ function handleItemClick(event, itemMenu, position) {
   document.addEventListener("mousemove", removeContextMenu);
 }
 
+function createServiceRelations(groupData) {
+  const serviceRelations = {};
+  groupData.forEach(group => {
+    group.items.forEach(item => {
+      serviceRelations[item.name] = {
+        backends: item.backends ? item.backends : [],
+        consumers: []
+      };
+    });
+  });
+  groupData.forEach(group => {
+    group.items.forEach(item => {
+      const backends = item.backends ? item.backends : [];
+      backends.forEach(backend => {
+        if (serviceRelations[backend]) {
+          serviceRelations[backend].consumers.push(item.name);
+        }
+      });
+    });
+  });
+
+  return serviceRelations;
+}
 
 fetch('data.yaml')
   .then(response => response.text())
   .then(yamlString => {
     const groupData = jsyaml.load(yamlString);
-
+    serviceRelations = createServiceRelations(groupData);
     groupData.forEach(group => {
       const setGroup = document.createElement("div");
       setGroup.className = "setGroup";
@@ -128,5 +186,8 @@ fetch('data.yaml')
     });
   })
   .catch(console.error);
-
-  
+  document.addEventListener('click', function(event) {
+    if( currentState === "highlighted") {
+      disableUnrelatedItems(null, serviceRelations);
+    }
+  });  

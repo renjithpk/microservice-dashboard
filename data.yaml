@@ -15,8 +15,8 @@
               link: https://somelink/hello
             - name: hey
               link: https://somelink/hey
+      backends: ["inventory-api", "user-management-api"]
     - name: availability-api
-      content: Content 2
       menu:
         - name: logs
           link: http://link/availability-api
@@ -30,54 +30,67 @@
               link: https://somelink/hello
             - name: hey
               link: https://somelink/hey
+      backends: ["booking-api", "user-management-api"]
     - name: reservation-api
-      content: Content 3
       menu:
         - name: logs
           link: http://link/reservation-api
         - name: metrics
           link: http://link/reservation-api
+      backends: ["booking-api"]
     - name: confirmation-api
-      content: Content 4
       menu:
         - name: logs
           link: http://link/booking-api
         - name: metrics
           link: http://link/booking-api
-
+      backends: ["inventory-api"]
+    - name: review-api
+      menu:
+        - name: logs
+          link: http://link/review-api
+        - name: metrics
+          link: http://link/review-api
+      backends: ["booking-api"]
 - group: vehicles
   color: "#dab1e0"
   items:
     - name: inventory-api
-      content: Content A
       buildStatusBadgeUrl: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
       menu:
         - name: logs
           link: http://link
         - name: metrics
           link: http://link
+      backends: ["booking-api", "user-management-api"]
     - name: vehicle-details-api
-      content: Content B
       menu:
         - name: logs
           link: http://link
         - name: metrics
           link: http://link
+      backends: ["inventory-api"]
     - name: maintenance-api
-      content: Content C
       menu:
         - name: logs
           link: http://link
         - name: metrics
           link: http://link
+      backends: ["inventory-api"]
     - name: pricing-api
-      content: Content D
       menu:
         - name: logs
           link: http://link
         - name: metrics
           link: http://link
-
+      backends: ["inventory-api", "user-management-api"]
+    - name: recommendation-api
+      menu:
+        - name: logs
+          link: http://link
+        - name: metrics
+          link: http://link
+      backends: ["booking-api", "user-management-api"]
 - group: payment
   color: "#b1e0c9"
   items:
@@ -87,53 +100,53 @@
           link: http://link
         - name: metrics
           link: http://link
+      backends: ["booking-api"]
     - name: invoice-api
-      content: Content 2
       menu:
         - name: logs
           link: http://link
         - name: metrics
           link: http://link
+      backends: ["payment-gateway-api", "user-management-api"]
     - name: refund-api
-      content: Content 3
       menu:
         - name: logs
           link: http://link
         - name: metrics
           link: http://link
+      backends: ["payment-gateway-api"]
     - name: coupon-api
-      content: Content 4
       menu:
         - name: logs
           link: http://link
         - name: metrics
           link: http://link
-
+      backends: ["booking-api"]
 - group: users
   color: "#dce0b1"
   items:
     - name: user-management-api
-      content: Content A
       buildStatusBadgeUrl: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
       menu:
         - name: logs
           link: http://link
         - name: metrics
           link: http://link
+      backends: ["inventory-api", "booking-api"]
     - name: authentication-api
-      content: Content B
       menu:
         - name: logs
           link: http://link
         - name: metrics
           link: http://link
+      backends: ["user-management-api"]
     - name: profile-api
-      content: Content C
       menu:
         - name: logs
           link: http://link
         - name: metrics
           link: http://link
+      backends: ["user-management-api"]
     - name: notification-api
       content: Content D
       menu:
@@ -141,3 +154,4 @@
           link: http://link
         - name: metrics
           link: http://link
+      backends: ["booking-api", "user-management-api", "inventory-api"]
