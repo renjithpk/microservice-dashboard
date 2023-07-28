@@ -1,5 +1,5 @@
-{{- range .}}
-- group: {{ .group }}
+{{- range $name, $value := .}}
+- group: {{ $name }}
   color: "{{ .color }}"
   items:
     {{- range .items }}

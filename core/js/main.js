@@ -1,4 +1,5 @@
 import { createContextMenu } from './contextMenu.js';
+import { getName } from './jsonQuery.js';
 
 const groupContainer = document.getElementById("gridContainer");
 let serviceRelations = {};
@@ -60,10 +61,14 @@ function createGridItems(items, color) {
       item.buttons.forEach(buttonData => {
         const button = document.createElement("button");
         button.className = "clickableButton";
-        button.textContent = buttonData.name;
+        getName(buttonData.name)
+          .then(result => button.textContent = result)
+          .catch(error => console.error(error.message));
         button.style.backgroundColor = buttonData.color;
-        // Add click event listener to the buttons
-        button.addEventListener("click", event => handleItemClick(event, buttonData.items, "topRight"));
+        if(buttonData.items) {
+          // Add click event listener to the buttons
+          button.addEventListener("click", event => handleItemClick(event, buttonData.items, "topRight"));
+        }
         // Append the button to the second row
         secondRow.appendChild(button);
       });

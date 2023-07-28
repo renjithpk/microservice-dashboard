@@ -5,92 +5,33 @@
       menu:
         - name: logs
           link: http://link/booking-api
-        - name: metrics
+        - name: ingress metrics
           link: http://link/booking-api
-      buttons:
-        - name: "new"
-          color: "#c3f0c2"
-          items:
-            - name: hello
-              link: https://somelink/hello
-            - name: hey
-              link: https://somelink/hey
-      backends: ["inventory-api", "user-management-api"]
+        - name:
+            link: http://localhost:8000/test
+            path: "info.version"
+          link: http://localhost:8000/test  
+      backends: [inventory-api user-management-api]
     - name: availability-api
-      menu:
-        - name: logs
-          link: http://link/availability-api
-        - name: metrics
-          link: http://link/availability-api
       buttons:
-        - name: "test"
-          color: "#becbe6"
-          items:
-            - name: hello
-              link: https://somelink/hello
-            - name: hey
-              link: https://somelink/hey
-      backends: ["booking-api", "user-management-api"]
-    - name: reservation-api
+        - name:
+            link: http://localhost:8000/test
+            path: "info.version"
       menu:
         - name: logs
-          link: http://link/reservation-api
+          link: http://link/availability-api
         - name: metrics
-          link: http://link/reservation-api
-      backends: ["booking-api"]
-    - name: confirmation-api
-      menu:
-        - name: logs
-          link: http://link/booking-api
-        - name: metrics
-          link: http://link/booking-api
-      backends: ["inventory-api"]
-    - name: review-api
-      menu:
-        - name: logs
-          link: http://link/review-api
-        - name: metrics
-          link: http://link/review-api
-      backends: ["booking-api"]
+          link: http://link/availability-api
+      backends: [booking-api user-management-api]
 - group: vehicles
   color: "#dab1e0"
   items:
     - name: inventory-api
-      buildStatusBadgeUrl: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
       menu:
         - name: logs
           link: http://link
         - name: metrics
           link: http://link
-      backends: ["booking-api", "user-management-api"]
-    - name: vehicle-details-api
-      menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
-      backends: ["inventory-api"]
-    - name: maintenance-api
-      menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
-      backends: ["inventory-api"]
-    - name: pricing-api
-      menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
-      backends: ["inventory-api", "user-management-api"]
-    - name: recommendation-api
-      menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
-      backends: ["booking-api", "user-management-api"]
 - group: payment
   color: "#b1e0c9"
   items:
@@ -100,58 +41,13 @@
           link: http://link
         - name: metrics
           link: http://link
-      backends: ["booking-api"]
-    - name: invoice-api
-      menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
-      backends: ["payment-gateway-api", "user-management-api"]
-    - name: refund-api
-      menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
-      backends: ["payment-gateway-api"]
-    - name: coupon-api
-      menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
-      backends: ["booking-api"]
 - group: users
   color: "#dce0b1"
   items:
     - name: user-management-api
-      buildStatusBadgeUrl: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
       menu:
         - name: logs
           link: http://link
         - name: metrics
           link: http://link
-      backends: ["inventory-api", "booking-api"]
-    - name: authentication-api
-      menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
-      backends: ["user-management-api"]
-    - name: profile-api
-      menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
-      backends: ["user-management-api"]
-    - name: notification-api
-      content: Content D
-      menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
-      backends: ["booking-api", "user-management-api", "inventory-api"]
+
