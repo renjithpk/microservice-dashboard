@@ -28,6 +28,9 @@ func (p *Processor) MergeValueFiles(files []string) (map[string]interface{}, err
 	var mergedData map[string]interface{}
 
 	for _, file := range files {
+		if file == "" {
+			continue
+		}
 		// Read the input values from each file
 		valuesData, err := ioutil.ReadFile(file)
 		if err != nil {
