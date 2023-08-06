@@ -1,17 +1,20 @@
-{{- range $name, $value := .}}
-- group: {{ $name }}
-  color: "{{ .color }}"
+{{- range $group, $data := .}}
+- group: {{ $group }}
+  color: "{{ $data.color }}"
   items:
-    {{- range .items }}
-    - name: {{ .name }}
-      menu:
-        {{- range .menu }}
-        - name: {{ .name }}
-          link: {{ .link }}
-        {{- end }}
-      {{- if .buttons }}
-      backends: {{ .backends }}
+    {{- range $name, $item := $data.items }}
+    - name: {{ $name }}
+      {{- if $item.backends }}
+      backends: {{ $item.backends }}
       {{- end }} 
+      menu:
+        - name: Log
+          link: http://link/{{ $name }}
+      buttons:
+        - name: Git Repo
+          color: "#3E8BFF"
+          items:
+            - name: View Code
+              link: https://github.com/{{ $name }} 
     {{- end }} 
 {{- end }}
-

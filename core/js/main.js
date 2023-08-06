@@ -2,8 +2,8 @@ import { createContextMenu } from './contextMenu.js';
 import { getName } from './jsonQuery.js';
 
 const groupContainer = document.getElementById("gridContainer");
-let serviceRelations = {};
-let currentState = "normal"
+let relations = {};
+let currentState = "normal";
 
 function alignMenuCorner(position, menuIcon, contextMenu) {
   const menuIconRect = menuIcon.getBoundingClientRect();
@@ -86,34 +86,33 @@ function createGridItems(items, color) {
 function handleGridItemClick(event, item) {
   const clickedItemName = item.name;
   if (currentState === "normal") {
-    disableUnrelatedItems(clickedItemName, serviceRelations);
+    disableUnrelatedItems(clickedItemName);
   } else {
-    disableUnrelatedItems(null, serviceRelations);
+    disableUnrelatedItems(null);
   }
   event.stopPropagation();
-  // You can implement other actions for the clicked item here
 }
 
-function disableUnrelatedItems(clickedItemName, serviceRelations) {
+function disableUnrelatedItems(clickedItemName) {
   const gridItems = document.querySelectorAll(".gridItem");
   gridItems.forEach(gridItem => {
     const itemName = gridItem.id;
-
-    // If clickedItemName is null, it means we want to reset all items to their original state
     if (clickedItemName === null) {
       gridItem.classList.remove("disabled");
-      currentState = "normal"
+      currentState = "normal";
     } else {
-      // Check if the item is related to the clicked item (either a backend or consumer)
-      const relatedToClicked = serviceRelations[clickedItemName].backends.includes(itemName) ||
-                               serviceRelations[clickedItemName].consumers.includes(itemName);
+      const relationInfo = relations[clickedItemName];
+      const isRelatedToClicked = relationInfo && (
+        (relationInfo.backends && relationInfo.backends.includes(itemName)) ||
+        (relationInfo.consumers && relationInfo.consumers.includes(itemName))
+      );
       // Disable unrelated items, except for the clicked item
       if (itemName !== clickedItemName) {
-        gridItem.classList.toggle("disabled", !relatedToClicked);
+        gridItem.classList.toggle("disabled", !isRelatedToClicked);
       }
-      currentState = "highlighted"
+      currentState = "highlighted";
     }
-  });
+ });
 }
 
 function handleItemClick(event, itemMenu, position) {
@@ -169,7 +168,15 @@ fetch('data.yaml')
   .then(response => response.text())
   .then(yamlString => {
     const groupData = jsyaml.load(yamlString);
-    serviceRelations = createServiceRelations(groupData);
+    groupData.forEach(group => {
+      group.items.forEach(item => {
+        relations[item.name] = {
+          backends: item.backends ? item.backends : [],
+          consumers: item.consumers ? item.consumers : []
+        };
+      });
+    });
+
     groupData.forEach(group => {
       const setGroup = document.createElement("div");
       setGroup.className = "setGroup";
@@ -191,8 +198,10 @@ fetch('data.yaml')
     });
   })
   .catch(console.error);
-  document.addEventListener('click', function(event) {
-    if( currentState === "highlighted") {
-      disableUnrelatedItems(null, serviceRelations);
-    }
-  });  
+
+document.addEventListener('click', function(event) {
+  if (currentState === "highlighted") {
+    disableUnrelatedItems(null);
+  }
+});
+

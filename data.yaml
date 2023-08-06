@@ -1,53 +1,65 @@
+
 - group: booking
   color: "#99bbf2"
   items:
-    - name: booking-api
-      menu:
-        - name: logs
-          link: http://link/booking-api
-        - name: ingress metrics
-          link: http://link/booking-api
-        - name:
-            link: http://localhost:8000/test
-            path: "info.version"
-          link: http://localhost:8000/test  
-      backends: [inventory-api user-management-api]
     - name: availability-api
+      backends: [booking-api user-management-api] 
+      menu:
+        - name: Log
+          link: http://link/availability-api
       buttons:
-        - name:
-            link: http://localhost:8000/test
-            path: "info.version"
+        - name: Git Repo
+          color: "#3E8BFF"
+          items:
+            - name: View Code
+              link: https://github.com/availability-api
+    - name: booking-api
+      backends: [inventory-api user-management-api] 
       menu:
-        - name: logs
-          link: http://link/availability-api
-        - name: metrics
-          link: http://link/availability-api
-      backends: [booking-api user-management-api]
-- group: vehicles
-  color: "#dab1e0"
-  items:
-    - name: inventory-api
-      menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
+        - name: Log
+          link: http://link/booking-api
+      buttons:
+        - name: Git Repo
+          color: "#3E8BFF"
+          items:
+            - name: View Code
+              link: https://github.com/booking-api
 - group: payment
   color: "#b1e0c9"
   items:
-    - name: payment-gateway-api
+    - name: payment-gateway-api 
       menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
+        - name: Log
+          link: http://link/payment-gateway-api
+      buttons:
+        - name: Git Repo
+          color: "#3E8BFF"
+          items:
+            - name: View Code
+              link: https://github.com/payment-gateway-api
 - group: users
   color: "#dce0b1"
   items:
-    - name: user-management-api
+    - name: user-management-api 
       menu:
-        - name: logs
-          link: http://link
-        - name: metrics
-          link: http://link
-
+        - name: Log
+          link: http://link/user-management-api
+      buttons:
+        - name: Git Repo
+          color: "#3E8BFF"
+          items:
+            - name: View Code
+              link: https://github.com/user-management-api
+- group: vehicles
+  color: "#dab1e0"
+  items:
+    - name: inventory-api 
+      menu:
+        - name: Log
+          link: http://link/inventory-api
+      buttons:
+        - name: Git Repo
+          color: "#3E8BFF"
+          items:
+            - name: View Code
+              link: https://github.com/inventory-api
