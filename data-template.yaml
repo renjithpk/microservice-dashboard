@@ -4,8 +4,17 @@
   items:
     {{- range $name, $item := $data.items }}
     - name: {{ $name }}
-      {{- if $item.backends }}
-      backends: {{ $item.backends }}
+      {{- with $item.backends }}
+      backends:
+      {{- range .}}
+      - {{ . }}
+      {{- end}}
+      {{- end }}
+      {{- with $item.consumers }}
+      consumers:
+      {{- range .}}
+      - {{ . }}
+      {{- end}}
       {{- end }} 
       menu:
         - name: Log

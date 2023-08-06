@@ -3,7 +3,11 @@
   color: "#99bbf2"
   items:
     - name: availability-api
-      backends: [booking-api user-management-api] 
+      backends:
+      - booking-api
+      - user-management-api
+      consumers:
+      - booking-api 
       menu:
         - name: Log
           link: http://link/availability-api
@@ -14,7 +18,9 @@
             - name: View Code
               link: https://github.com/availability-api
     - name: booking-api
-      backends: [inventory-api user-management-api] 
+      backends:
+      - inventory-api
+      - user-management-api 
       menu:
         - name: Log
           link: http://link/booking-api
@@ -40,7 +46,10 @@
 - group: users
   color: "#dce0b1"
   items:
-    - name: user-management-api 
+    - name: user-management-api
+      consumers:
+      - booking-api
+      - availability-api 
       menu:
         - name: Log
           link: http://link/user-management-api
@@ -53,7 +62,9 @@
 - group: vehicles
   color: "#dab1e0"
   items:
-    - name: inventory-api 
+    - name: inventory-api
+      consumers:
+      - booking-api 
       menu:
         - name: Log
           link: http://link/inventory-api

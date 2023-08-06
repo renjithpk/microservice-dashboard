@@ -9,10 +9,14 @@ booking:
       backends:
       - booking-api
       - user-management-api
+      consumers:
+      - booking-api
 vehicles:
   color: "#dab1e0"
   items:
-    inventory-api: {}
+    inventory-api:
+      consumers:
+      - booking-api
 payment:
   color: "#b1e0c9"
   items:
@@ -20,4 +24,7 @@ payment:
 users:
   color: "#dce0b1"
   items:
-    user-management-api: {}
+    user-management-api:
+      consumers:
+      - booking-api
+      - availability-api
