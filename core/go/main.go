@@ -8,6 +8,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/Masterminds/sprig/v3"
 	"gopkg.in/yaml.v3"
 )
 
@@ -62,7 +63,7 @@ func (p *Processor) ProcessTemplate(mergedData map[string]interface{}) error {
 	}
 
 	// Create a new template and parse the template data
-	tmpl, err := template.New("data-template").Parse(string(templateData))
+	tmpl, err := template.New("data-template").Funcs(sprig.TxtFuncMap()).Parse(string(templateData))
 	if err != nil {
 		return fmt.Errorf("failed to parse template: %v", err)
 	}

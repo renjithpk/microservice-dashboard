@@ -61,13 +61,53 @@ function createGridItems(items, color) {
       item.buttons.forEach(buttonData => {
         const button = document.createElement("button");
         button.className = "clickableButton";
-        getName(buttonData.name)
-          .then(result => button.textContent = result)
-          .catch(error => console.error(error.message));
+
+        // Check if both image and text are provided
+        if (buttonData.image && buttonData.name) {
+          // Create a container for the image and text (flexbox layout)
+          const contentContainer = document.createElement("div");
+          contentContainer.style.display = "flex";
+          contentContainer.style.alignItems = "center";
+
+          // Create the image element
+          const image = document.createElement("img");
+          image.src = buttonData.image;
+          // Set any additional image styles here if needed
+
+          // Create the text element
+          const text = document.createElement("span");
+          getName(buttonData.name)
+            .then(result => text.textContent = result)
+            .catch(error => console.error(error.message));
+          // Set any additional text styles here if needed
+
+          // Append the image and text elements to the content container
+          contentContainer.appendChild(image);
+          contentContainer.appendChild(text);
+
+          // Append the content container to the button
+          button.appendChild(contentContainer);
+        } else if (buttonData.image) {
+          // If only the image is provided, add the image element directly to the button
+          const image = document.createElement("img");
+          image.src = buttonData.image;
+          // Set any additional image styles here if needed
+
+          button.appendChild(image);
+        } else if (buttonData.name){
+          getName(buttonData.name)
+            .then(result => button.textContent = result)
+            .catch(error => console.error(error.message));
+        }
         button.style.backgroundColor = buttonData.color;
         if(buttonData.items) {
           // Add click event listener to the buttons
           button.addEventListener("click", event => handleItemClick(event, buttonData.items, "topRight"));
+        } else if (buttonData.link) {
+          button.addEventListener("click", function(event){
+            event.stopPropagation();
+            window.open(buttonData.link, "_blank");
+          })
         }
         // Append the button to the second row
         secondRow.appendChild(button);
