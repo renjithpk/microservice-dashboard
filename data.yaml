@@ -11,12 +11,24 @@
       menu:
         - name: Log
           link: http://link/availability-api
+      colorcode:
+        name: versions
+        items:
+        - blue
+        - red
+        - stringColor:
+            link: /details/booking-api/version
+            path: "api.version"
       buttons:
         - name: Git Repo
           color: "#3E8BFF"
+          info: "hint message"
           items:
             - name: View Code
               link: https://github.com/availability-api
+        - name: git
+          image: ./git.png
+          info: "hint message"
     - name: booking-api
       backends:
       - inventory-api
@@ -24,6 +36,11 @@
       menu:
         - name: Log
           link: http://link/booking-api
+      colorcode:
+        items:
+        - black
+        - red
+        - green
       buttons:
         - name: Git Repo
           color: "#3E8BFF"
@@ -70,7 +87,7 @@
           link: http://link/inventory-api
       buttons:
         - name: Git Repo
-          color: "#3E8BFF"
+          color: yellow
           items:
             - name: View Code
               link: https://github.com/inventory-api

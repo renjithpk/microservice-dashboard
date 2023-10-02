@@ -47,6 +47,9 @@ groups:
                 link: https://somelink/submenu1
               - name: Submenu Item 2
                 link: https://somelink/submenu2
+            # image on buttons
+            - name: git
+              image: ./git.png
         backends: ["BackendMicroservice1", "BackendMicroservice2"]
       - name: Microservice 2
         menu:

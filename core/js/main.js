@@ -1,6 +1,6 @@
 import { createContextMenu } from './contextMenu.js';
 import { getName } from './jsonQuery.js';
-
+import { getValueFromURL } from './jsonQuery.js'; 
 const groupContainer = document.getElementById("gridContainer");
 let relations = {};
 let currentState = "normal";
@@ -26,6 +26,34 @@ function alignMenuCorner(position, menuIcon, contextMenu) {
   }
 }
 
+async function stringToColor(arg) {
+  if (typeof arg === 'string' || typeof arg === 'number') {
+    return Promise.resolve({color: generateHashCodeFromStr(String(arg)), string: fetchedValue});
+  } else if (typeof arg === 'object' && arg !== null && 'link' in arg && 'path' in arg) {
+    const { link, path } = arg;
+    
+    try {
+      const fetchedValue = await getValueFromURL(link, path);
+      return await Promise.resolve({ color: generateHashCodeFromStr(fetchedValue), string: fetchedValue, link: link});
+    } catch (error) {
+      return await Promise.reject(new Error('Error fetching data from URL: ' + error.message));
+    }
+  } else {
+    return Promise.reject(new Error('Invalid argument type or missing required fields.'));
+  }
+}
+
+function generateHashCodeFromStr(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  // Convert the hash into a hexadecimal color code
+  const color = "#" + ((hash & 0x00FFFFFF).toString(16)).toUpperCase();
+
+  return color;
+}
 
 function createGridItems(items, color) {
   const gridItems = [];
@@ -109,9 +137,63 @@ function createGridItems(items, color) {
             window.open(buttonData.link, "_blank");
           })
         }
+        if(buttonData.info) {
+          button.title = buttonData.info
+        }
+        if(buttonData.color) {
+          button.style.backgroundColor = buttonData.color
+        }
         // Append the button to the second row
         secondRow.appendChild(button);
       });
+    }
+    if(item.colorcode ) {
+      const colorCodeBar = document.createElement("colorCodeBar");
+      colorCodeBar.className = "colorCodeBar"
+
+      // Create a title element and set its text to the color code name
+      const titleElement = document.createElement("div");
+      if(item.colorcode.name) {
+        titleElement.textContent = item.colorcode.name;
+        titleElement.className = "colorCodeTitle"; // You can define this class in your CSS
+      }
+
+
+      // Append the title element to the colorCodeBar
+      colorCodeBar.appendChild(titleElement);
+      item.colorcode.items.forEach(async (item) => {
+        const colorBox = document.createElement("div");
+        colorBox.classList.add("colorBox");
+      
+        if (typeof item === 'string' || typeof item === 'number') {
+          colorBox.style.backgroundColor = item;
+          colorBox.title = item
+        } else if (typeof item === 'object' && item !== null && 'stringColor' in item) {
+          try {
+            stringToColor(item.stringColor).then( result => {
+              colorBox.style.backgroundColor = result.color;
+              if(result.link) {
+                // Add a click event listener to make the colorBox clickable
+                colorBox.addEventListener('click', () => {
+                  // Redirect to the link when clicked
+                  window.location.href = result.link;
+                });
+              }
+              if(result.string) {
+                colorBox.title = result.string
+              }
+
+            })
+          } catch (error) {
+            console.error('Error:', error.message);
+            colorBox.textContent = "X";
+          }
+        } else {
+          colorBox.textContent = "X";
+        }
+        colorCodeBar.appendChild(colorBox);
+      });
+      secondRow.appendChild(colorCodeBar);
     }
     // Append the first row and second row to the grid item
     gridItem.appendChild(firstRow);

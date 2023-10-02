@@ -13,19 +13,30 @@ def serve_file(filename):
         return response
     else:
         return send_from_directory('.', filename)
-@app.route('/test/<path:path>')
-def test_endpoint(path):
+@app.route('/details/booking-api/<path:path>')
+def test_endpoint_1(path):
     # Create a simple JSON response
     data = {
         'message': f'This is a test endpoint with path: {path}',
         'status': 'success',
-        'info': {
+        'api': {
             'version': "v1.2.3"
         }
     }
     # Use jsonify to convert the dictionary to JSON format and return it as the response
     return jsonify(data)
-
+@app.route('/details/booking-api/<path:path>')
+def test_endpoint_2(path):
+    # Create a simple JSON response
+    data = {
+        'message': f'This is a test endpoint with path: {path}',
+        'status': 'success',
+        'api': {
+            'version': "v0.2.3"
+        }
+    }
+    # Use jsonify to convert the dictionary to JSON format and return it as the response
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(port=8000)
