@@ -67,13 +67,19 @@ func TestProcessTemplate(t *testing.T) {
 	templateData := `
 groups:
 {{- range .groups }}
+  {{- $groupMetadata := .metadata}}
   - group: {{ .group }}
     tiles:
-    {{- range .categories }}
-      {{- range .apis}}
+  {{- range .categories }}
+    {{- $categoryMetadata := .metadata}}
+    {{- range .apis}}
       - name: {{ .name }}
+      {{- $metadata := mergeValues $groupMetadata $categoryMetadata }}
+      {{- if $metadata.jenkin_badge}}
+        jenkin_badge: true
       {{- end}}
     {{- end}}
+  {{- end}}
 {{- end }}
 `
 
@@ -83,14 +89,16 @@ groups:
   - group: group-name
     metadata:
       git_badge: true
-      jenkin-badge: true
+      jenkin_badge: true
     categories:
       - type: type
         metadata:
           git_badge: false
         apis:
           - name: api1
+            jenkin_badge: true
           - name: api2
+            jenkin_badge: true
 `
 
 	// Read the generated output file and compare its content with the expected template
@@ -99,7 +107,9 @@ groups:
   - group: group-name
     tiles:
       - name: api1
+        jenkin_badge: true
       - name: api2
+        jenkin_badge: true
 `
 
 	// Create temporary test directory

@@ -8,7 +8,6 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/Masterminds/sprig/v3"
 	"gopkg.in/yaml.v3"
 )
 
@@ -62,8 +61,13 @@ func (p *Processor) ProcessTemplate(mergedData map[string]interface{}) error {
 		return fmt.Errorf("failed to read template file %s: %v", p.TemplatePath, err)
 	}
 
+	// Define the custom function map with the added withMergedValues function
+	funcMap := template.FuncMap{
+		"mergeValues": p.MergeValues,
+	}
+
 	// Create a new template and parse the template data
-	tmpl, err := template.New("data-template").Funcs(sprig.TxtFuncMap()).Parse(string(templateData))
+	tmpl, err := template.New("data-template").Funcs(funcMap).Funcs(funcMap).Parse(string(templateData))
 	if err != nil {
 		return fmt.Errorf("failed to parse template: %v", err)
 	}
@@ -83,7 +87,7 @@ func (p *Processor) ProcessTemplate(mergedData map[string]interface{}) error {
 	return nil
 }
 
-// mergeMaps merges two maps recursively, with the values from "overwrite" map taking precedence.
+// MergeMaps merges two maps recursively, with the values from "overwrite" map taking precedence.
 func (p *Processor) MergeMaps(base, overwrite map[string]interface{}) map[string]interface{} {
 	if base == nil {
 		base = make(map[string]interface{})
@@ -108,6 +112,19 @@ func (p *Processor) MergeMaps(base, overwrite map[string]interface{}) map[string
 	return base
 }
 
+// MergeValues merges multiple maps and returns the result.
+func (p *Processor) MergeValues(maps ...map[string]interface{}) map[string]interface{} {
+	// Initialize an empty base map to merge with
+	base := make(map[string]interface{})
+
+	// Merge each map into the base
+	for _, m := range maps {
+		base = p.MergeMaps(base, m)
+	}
+
+	return base
+}
+
 // GetOutputFile returns the path of the output file.
 func (p *Processor) GetOutputFile() string {
 	return p.OutputFile
@@ -122,7 +139,7 @@ func main() {
 
 	flag.StringVar(&templateFile, "template", "./data-template.yaml", "Path to the template YAML file")
 	flag.StringVar(&outputFile, "output", "./data.yaml", "Path to the output YAML file")
-	flag.StringVar(&valuesFiles, "values", "./values.yaml", "Path to comma separated values YAML file")
+	flag.StringVar(&valuesFiles, "values", "./values.yaml", "Path to comma-separated values YAML file")
 	flag.BoolVar(&showHelp, "help", false, "Show usage information")
 
 	flag.Parse()
