@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"gopkg.in/yaml.v3"
 )
 
 func TestMergeValueFiles(t *testing.T) {
@@ -61,32 +63,51 @@ d: 6`,
 }
 
 func TestProcessTemplate(t *testing.T) {
+	// Template data directly in the test case
+	templateData := `
+groups:
+{{- range .groups }}
+  - group: {{ .group }}
+    tiles:
+    {{- range .categories }}
+      {{- range .apis}}
+      - name: {{ .name }}
+      {{- end}}
+    {{- end}}
+{{- end }}
+`
+
+	// Define your merged data (replace this with your actual merged data)
+	valuesInYamlForm := `
+groups:
+  - group: group-name
+    metadata:
+      git_badge: true
+      jenkin-badge: true
+    categories:
+      - type: type
+        metadata:
+          git_badge: false
+        apis:
+          - name: api1
+          - name: api2
+`
+
+	// Read the generated output file and compare its content with the expected template
+	expectedOutput := `
+groups:
+  - group: group-name
+    tiles:
+      - name: api1
+      - name: api2
+`
+
 	// Create temporary test directory
 	tempDir, err := ioutil.TempDir("", "test")
 	if err != nil {
 		t.Fatalf("Failed to create temporary directory: %v", err)
 	}
 	defer os.RemoveAll(tempDir)
-
-	// Template data directly in the test case
-	templateData := `
-{{- range $name, $group := . }}
-- group: {{ $name }}
-  color: "{{ $group.color }}"
-  items:
-{{- range $item := $group.items }}
-    - name: {{ $item.name }}
-      menu:
-{{- range $menu := $item.menu }}
-        - name: {{ $menu.name }}
-          link: {{ $menu.link }}
-{{- end }}
-{{- if $item.backends }}
-        backends: {{ $item.backends }}
-{{- end }}
-{{- end }}
-{{- end }}
-`
 
 	// Create a temporary file for the template
 	templateFile := filepath.Join(tempDir, "data-template.yaml")
@@ -101,47 +122,12 @@ func TestProcessTemplate(t *testing.T) {
 	// Your test logic using the temporary template and output files...
 	processor := NewProcessor(templateFile, outputFile)
 
-	// Define your merged data (replace this with your actual merged data)
-	mergedData := map[string]interface{}{
-		"GroupA": map[string]interface{}{
-			"color": "red",
-			"items": []map[string]interface{}{
-				{
-					"name": "ItemA1",
-					"menu": []map[string]interface{}{
-						{
-							"name": "MenuA1",
-							"link": "linkA1",
-						},
-					},
-					"backends": "buttonA",
-				},
-				{
-					"name": "ItemA2",
-					"menu": []map[string]interface{}{
-						{
-							"name": "MenuB1",
-							"link": "linkB1",
-						},
-					},
-					"backends": "buttonB",
-				},
-			},
-		},
-		"GroupB": map[string]interface{}{
-			"color": "blue",
-			"items": []map[string]interface{}{
-				{
-					"name": "ItemB1",
-					"menu": []map[string]interface{}{
-						{
-							"name": "MenuC1",
-							"link": "linkC1",
-						},
-					},
-				},
-			},
-		},
+	// TODO add code to populate mergedData
+	// mergedData = convert valuesInYamlForm
+	var mergedData map[string]interface{}
+	err = yaml.Unmarshal([]byte(valuesInYamlForm), &mergedData)
+	if err != nil {
+		t.Fatalf("Failed to unmarshal YAML data: %v", err)
 	}
 
 	// Test the ProcessTemplate function
@@ -149,30 +135,6 @@ func TestProcessTemplate(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to process template: %v", err)
 	}
-
-	// Read the generated output file and compare its content with the expected template
-	expectedOutput := `
-- group: GroupA
-  color: "red"
-  items:
-    - name: ItemA1
-      menu:
-        - name: MenuA1
-          link: linkA1
-        backends: buttonA
-    - name: ItemA2
-      menu:
-        - name: MenuB1
-          link: linkB1
-        backends: buttonB
-- group: GroupB
-  color: "blue"
-  items:
-    - name: ItemB1
-      menu:
-        - name: MenuC1
-          link: linkC1
-`
 
 	outputData, err := ioutil.ReadFile(outputFile)
 	if err != nil {
