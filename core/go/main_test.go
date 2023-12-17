@@ -1,19 +1,21 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
 func TestMergeValueFiles(t *testing.T) {
 	// Create temporary test files
-	testData := map[string]string{
-		"values1.yaml": `a: 1
+	testData := []string{
+		`a: 1
 b: 2`,
-		"values2.yaml": `b: 3
+		`b: 3
 c: 4`,
-		"values3.yaml": `a: 5
+		`a: 5
 d: 6`,
 	}
 
@@ -24,8 +26,9 @@ d: 6`,
 	defer os.RemoveAll(tempDir)
 
 	files := []string{}
-	for filename, data := range testData {
-		filePath := tempDir + "/" + filename
+	for i, data := range testData {
+		filename := fmt.Sprintf("values%d.yaml", i+1)
+		filePath := filepath.Join(tempDir, filename)
 		err := ioutil.WriteFile(filePath, []byte(data), 0644)
 		if err != nil {
 			t.Fatalf("Failed to write test data: %v", err)
