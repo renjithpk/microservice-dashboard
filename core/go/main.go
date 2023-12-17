@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"reflect"
 	"strings"
 	"text/template"
 
@@ -67,6 +68,7 @@ func (p *Processor) ProcessTemplate(mergedData map[string]interface{}) error {
 	funcMap := template.FuncMap{
 		"mergeValues": p.MergeValues,
 		"log":         p.DebugPrettyPrint,
+		"override":    p.override,
 	}
 
 	// Create a new template and parse the template data
@@ -128,6 +130,38 @@ func (p *Processor) MergeValues(maps ...map[string]interface{}) map[string]inter
 	return base
 }
 
+func (p *Processor) override(args ...interface{}) interface{} {
+	var prevType reflect.Type
+	var base interface{}
+
+	// Check for nil base outside the loop
+	for _, arg := range args {
+		if arg == nil {
+			continue
+		}
+		// Get the type of the current argument
+		currType := reflect.TypeOf(arg)
+		if base == nil {
+			base = arg
+			prevType = currType
+			continue
+		}
+
+		// If the previous type is not nil, compare types
+		if currType != prevType {
+			panic(fmt.Sprintf("Error: Inconsistent types in override. Expected %v, got %v", prevType, currType))
+		}
+
+		// If the type is map, merge maps
+		if currType.Kind() == reflect.Map {
+			base = p.MergeMaps(base.(map[string]interface{}), arg.(map[string]interface{}))
+		} else {
+			base = arg
+		}
+	}
+	return base
+}
+
 func (p *Processor) DebugPrettyPrint(args ...interface{}) string {
 	fmt.Print("\nDebug Outputs:\n")
 	for _, val := range args {
@@ -150,6 +184,13 @@ func (p *Processor) GetOutputFile() string {
 }
 
 func main() {
+	defer func() {
+		if r := recover(); r != nil {
+			color.Red(fmt.Sprintf("Failed: %v", r))
+			os.Exit(1)
+		}
+	}()
+
 	// Define flags for templateFile, outputFile, and inputFiles
 	var templateFile string
 	var outputFile string

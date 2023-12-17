@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 
 	"gopkg.in/yaml.v3"
@@ -62,6 +63,76 @@ d: 6`,
 	}
 }
 
+func TestOverride(t *testing.T) {
+	processor := NewProcessor("", "") // Assuming you have proper initialization
+
+	tests := []struct {
+		name          string
+		args          []interface{}
+		expected      interface{}
+		expectedPanic string
+	}{
+		{
+			name:     "Merge Maps",
+			args:     []interface{}{map[string]interface{}{"a": 1}, map[string]interface{}{"b": 2}},
+			expected: map[string]interface{}{"a": 1, "b": 2},
+		},
+		{
+			name:     "Replace String",
+			args:     []interface{}{"abc", "xyz"},
+			expected: "xyz",
+		},
+		{
+			name:     "string and nil",
+			args:     []interface{}{"abc", nil},
+			expected: "abc",
+		},
+		{
+			name:     "nil and String",
+			args:     []interface{}{nil, "abc"},
+			expected: "abc",
+		},
+		{
+			name:     "Nil Arguments",
+			args:     []interface{}{nil, nil},
+			expected: nil,
+		},
+		{
+			name:     "Map and Nil",
+			args:     []interface{}{map[string]interface{}{"a": 1}, nil},
+			expected: map[string]interface{}{"a": 1},
+		},
+		{
+			name:     "nil and Map",
+			args:     []interface{}{nil, map[string]interface{}{"a": 1}},
+			expected: map[string]interface{}{"a": 1},
+		},
+		{
+			name:          "Inconsistent Types",
+			args:          []interface{}{map[string]interface{}{"a": 1}, "xyz", 123, nil},
+			expected:      nil,
+			expectedPanic: "Error: Inconsistent types in override. Expected map[string]interface {}, got string",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			// Recover from panics and compare with the expected panic value
+			defer func() {
+				if r := recover(); r != nil {
+					if got, want := fmt.Sprintf("%v", r), test.expectedPanic; got != want {
+						t.Errorf("Expected panic: %v, got: %v", want, got)
+					}
+				}
+			}()
+
+			result := processor.override(test.args...)
+			if !reflect.DeepEqual(result, test.expected) {
+				t.Errorf("Expected %v, but got %v", test.expected, result)
+			}
+		})
+	}
+}
 func TestProcessTemplate(t *testing.T) {
 	// Template data directly in the test case
 	templateData := `
@@ -75,7 +146,7 @@ groups:
     {{- $categoryMetadata := .metadata}}
     {{- range .apis}}
       - name: {{ .name }}
-      {{- $metadata := mergeValues $groupMetadata $categoryMetadata }}
+      {{- $metadata := override $groupMetadata $categoryMetadata }}
       {{- if $metadata.jenkin_badge}}
         jenkin_badge: true
       {{- end}}
