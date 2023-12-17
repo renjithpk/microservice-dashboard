@@ -61,6 +61,47 @@ d: 6`,
 }
 
 func TestProcessTemplate(t *testing.T) {
+	// Create temporary test directory
+	tempDir, err := ioutil.TempDir("", "test")
+	if err != nil {
+		t.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	// Template data directly in the test case
+	templateData := `
+{{- range $name, $group := . }}
+- group: {{ $name }}
+  color: "{{ $group.color }}"
+  items:
+{{- range $item := $group.items }}
+    - name: {{ $item.name }}
+      menu:
+{{- range $menu := $item.menu }}
+        - name: {{ $menu.name }}
+          link: {{ $menu.link }}
+{{- end }}
+{{- if $item.backends }}
+        backends: {{ $item.backends }}
+{{- end }}
+{{- end }}
+{{- end }}
+`
+
+	// Create a temporary file for the template
+	templateFile := filepath.Join(tempDir, "data-template.yaml")
+	err = ioutil.WriteFile(templateFile, []byte(templateData), 0644)
+	if err != nil {
+		t.Fatalf("Failed to write template file: %v", err)
+	}
+
+	// Output file in the temporary directory
+	outputFile := filepath.Join(tempDir, "temp_output.yaml")
+
+	// Your test logic using the temporary template and output files...
+	processor := NewProcessor(templateFile, outputFile)
+
+	// Define your merged data (replace this with your actual merged data)
 	mergedData := map[string]interface{}{
 		"GroupA": map[string]interface{}{
 			"color": "red",
@@ -103,15 +144,8 @@ func TestProcessTemplate(t *testing.T) {
 		},
 	}
 
-	// Create a new Processor with test-specific template and output files
-	processor := NewProcessor("./testdata/data-template.yaml", "temp_output.yaml")
-
-	// Set a temporary output file for the test
-	tempOutputFile := processor.GetOutputFile()
-	defer os.Remove(tempOutputFile)
-
 	// Test the ProcessTemplate function
-	err := processor.ProcessTemplate(mergedData)
+	err = processor.ProcessTemplate(mergedData)
 	if err != nil {
 		t.Fatalf("Failed to process template: %v", err)
 	}
@@ -139,7 +173,8 @@ func TestProcessTemplate(t *testing.T) {
         - name: MenuC1
           link: linkC1
 `
-	outputData, err := ioutil.ReadFile(tempOutputFile)
+
+	outputData, err := ioutil.ReadFile(outputFile)
 	if err != nil {
 		t.Fatalf("Failed to read output file: %v", err)
 	}
