@@ -68,7 +68,7 @@ func TestProcessTemplate(t *testing.T) {
 groups:
 {{- range .groups }}
   {{- $groupMetadata := .metadata}}
-  - group: {{ .group }}
+  - group: {{ upper .group }}
     tiles:
   {{- range .categories }}
     {{- $categoryMetadata := .metadata}}
@@ -104,7 +104,7 @@ groups:
 	// Read the generated output file and compare its content with the expected template
 	expectedOutput := `
 groups:
-  - group: group-name
+  - group: GROUP-NAME
     tiles:
       - name: api1
         jenkin_badge: true
