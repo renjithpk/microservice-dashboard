@@ -9,6 +9,7 @@ import (
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
+	"github.com/fatih/color"
 	"gopkg.in/yaml.v3"
 )
 
@@ -65,6 +66,7 @@ func (p *Processor) ProcessTemplate(mergedData map[string]interface{}) error {
 	// Define the custom function map with the added withMergedValues function
 	funcMap := template.FuncMap{
 		"mergeValues": p.MergeValues,
+		"log":         p.DebugPrettyPrint,
 	}
 
 	// Create a new template and parse the template data
@@ -126,6 +128,22 @@ func (p *Processor) MergeValues(maps ...map[string]interface{}) map[string]inter
 	return base
 }
 
+func (p *Processor) DebugPrettyPrint(args ...interface{}) string {
+	fmt.Print("\nDebug Outputs:\n")
+	for _, val := range args {
+		yamlBytes, err := yaml.Marshal(val)
+		if err != nil {
+			color.Red(fmt.Sprintf("%s %v\n", "formatting value:", err))
+			continue
+		}
+		// result += string(yamlBytes) + "\n"
+		fmt.Printf("\n---\n")
+		color.Yellow(string(yamlBytes))
+	}
+	fmt.Print("\n\n")
+	return ""
+}
+
 // GetOutputFile returns the path of the output file.
 func (p *Processor) GetOutputFile() string {
 	return p.OutputFile
@@ -161,7 +179,7 @@ func main() {
 			fmt.Printf(" %d)  %s\n", i+1, valueFile)
 		}
 	} else {
-		fmt.Printf("Failed no values files given")
+		color.Red("Failed no values files given")
 		os.Exit(1)
 	}
 
@@ -171,7 +189,8 @@ func main() {
 	processor := NewProcessor(templateFile, outputFile)
 	mergedData, err := processor.MergeValueFiles(inputFiles)
 	if err != nil {
-		fmt.Printf("Failed to merge values: %v\n", err)
+		color.Red("Failed to merge values")
+		fmt.Printf("%v\n", err)
 		flag.Usage()
 		os.Exit(1)
 	}
@@ -179,9 +198,10 @@ func main() {
 	// Process the template with the merged values
 	err = processor.ProcessTemplate(mergedData)
 	if err != nil {
-		fmt.Printf("Failed to execute template: %v\n", err)
+		color.Red("Failed to execute template:")
+		fmt.Printf("%v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Println("Template processing completed. Output file:", processor.GetOutputFile())
+	color.Green(fmt.Sprintln("Template processing completed. Output file:", processor.GetOutputFile()))
 }

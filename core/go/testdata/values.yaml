@@ -1,0 +1,14 @@
+groups:
+  - group: group-name
+    metadata:
+      git_badge: true
+      jenkin_badge: true
+    categories:
+      - type: type
+        metadata:
+          git_badge: false
+        apis:
+          - name: api1
+            jenkin_badge: true
+          - name: api2
+            jenkin_badge: true

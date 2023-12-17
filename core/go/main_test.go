@@ -67,6 +67,7 @@ func TestProcessTemplate(t *testing.T) {
 	templateData := `
 groups:
 {{- range .groups }}
+  {{- log . }}
   {{- $groupMetadata := .metadata}}
   - group: {{ upper .group }}
     tiles:

@@ -1,0 +1,17 @@
+groups:
+{{- range .groups }}
+  {{- log . }}
+  {{- $groupMetadata := .metadata}}
+  - group: {{ upper .group }}
+    tiles:
+  {{- range .categories }}
+    {{- $categoryMetadata := .metadata}}
+    {{- range .apis}}
+      - name: {{ .name }}
+      {{- $metadata := mergeValues $groupMetadata $categoryMetadata }}
+      {{- if $metadata.jenkin_badge}}
+        jenkin_badge: true
+      {{- end}}
+    {{- end}}
+  {{- end}}
+{{- end }}
